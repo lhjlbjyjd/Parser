@@ -1,0 +1,64 @@
+ScreenSize
+11,6'' 
+ScreenResolution
+1366x768 HD 
+ScreenCover
+Матовое 
+CPU
+Intel Celeron 
+CPUModel
+N3060 
+CPUCores
+2 ядра 
+CPUClock
+1,6 (2,48) ГГц 
+RAM
+2 ГБ 
+RAMType
+DDR3L 
+RAMClock
+1600 МГц 
+Memory
+32 ГБ 
+MemoryType
+eMMC 
+GPUManufacturer
+Intel 
+GPUModel
+HD Graphics 400 
+GRAMSize
+Использует ОЗУ 
+GPUType
+Интегрированный 
+OS
+Windows 10 Home 
+DiscReader
+Без дисковода 
+WifyType
+802.11 ac 
+BluetoothVersion
+Версия 4.0 
+hdmi
+
+Usb2Count
+2 шт. 
+Usb3Count
+1 шт. 
+cardreader
+
+Material
+Пластик 
+Material
+Пластик 
+Colour
+Серебристый 
+Weigth
+1,15 кг 
+Guarantee
+1 год 
+Undefined
+Ноутбук, адаптер питания, документация 
+MadeInCountry
+Китай 
+Manufacturer
+Lenovo 
