@@ -15,20 +15,29 @@ using namespace std;
 
 class comfyParse{
 
+private:
+    vector<string> brandsList;
+    curlParse *o;
+
 public:
 
     string url;
     long long int srtPos = 0;
 
     comfyParse(string href){
+        o = new curlParse();
         url = href;
         sPageParse(href);
+    }
+
+    ~comfyParse(){
+        delete o;
     }
 
 // begin page parse - функция для получения ссылок с начальной страницы
     void bPageParse(string &href){
 
-        curlParse *o = new curlParse(href);
+        o->setUrl(href);
         string *page;
         page = o ->getStringFromDoc();
 
@@ -60,7 +69,6 @@ public:
 
         }
 
-        delete o;
         delete k;
 
 
@@ -68,7 +76,7 @@ public:
 
 // second page parse - функция для получения количества моделей
     void sPageParse(string &href){
-        curlParse *o = new curlParse(href);
+        o->setUrl(href);
         string *page;
         page =  o ->getStringFromDoc();
 
@@ -121,7 +129,6 @@ public:
 
         }
 
-        delete o;
     }
 
 // object page parse - функция для получения данных со страницы товара
@@ -129,7 +136,7 @@ public:
     void objPageParse(string &href, long long int &cnt)
     {
         long long int startTime = time(nullptr);
-        curlParse *o = new curlParse(href);
+        o->setUrl(href);
         string *page;
         page =  o ->getStringFromDoc();
 
@@ -171,7 +178,6 @@ public:
 
         cout << "Time elapsed for object: " << time(nullptr)-startTime << " sec." << endl;
 
-        delete o;
         delete k;
 
     }
@@ -183,18 +189,24 @@ public:
 
     void fPageParse(string &href,vector <string> *ftr){
 // feature vector - содержит заголовок и особенности товара
-
-        curlParse *o = new curlParse(href);
+        cout << href << endl;
+        o->setUrl(href);
         string *page;
         page = o ->getStringFromDoc();
-
-
-
-        if(page -> length()) cout<<"Final page load success "<<href<<"\n";
 
         vector <string> prs;
 
         stringParse *k = new stringParse(page);
+
+
+        if(page -> length()){
+            cout<<"Final page load success: ";
+            vector<long long int> lol = k->doKmp("<title");
+            string title = k->getTagBody(lol[0], "title");
+            title.erase (title.end()-201, title.end());
+            cout << title << endl;
+        }
+
         k -> getSpcBody("dl","class=features-item__list", &prs, srtPos);
         delete k;
 
@@ -207,7 +219,6 @@ public:
 
             delete strPrs;
         }
-        delete o;
         tidyUp(ftr);
 
         //ДОБАВЛЕНО КРИВОРУКИМ ДОЛБОЁБОМ
@@ -252,10 +263,13 @@ public:
             (*ftr)[i] = s;
         }
 
-
-
-
     }
+
+    void getBrands(string* page){
+        stringParse *k = new stringParse(page);
+        //k -> getSpcBody("dl","class=features-item__list", &prs, srtPos);
+    }
+
 
 // href validation - если ссылка не абсолютна, делает её таковой.
     void hrefVld(string &href){

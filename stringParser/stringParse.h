@@ -66,7 +66,7 @@ public:
 
         if(!(html -> length()))
         {
-            cout<<"Sorry, empty string, function terminates";
+            cout<<"Sorry, empty string, function terminates" << endl;
             return positions;
         }
 
