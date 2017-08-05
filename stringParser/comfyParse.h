@@ -17,7 +17,7 @@ class comfyParse{
 
 private:
     vector<string> brandsList;
-    curlParse *o;
+    curlParse *curlParser, *finalPageParser;
 
 public:
 
@@ -25,21 +25,23 @@ public:
     long long int srtPos = 0;
 
     comfyParse(string href){
-        o = new curlParse();
+        curlParser = new curlParse();
+        finalPageParser = new curlParse();
         url = href;
         sPageParse(href);
     }
 
     ~comfyParse(){
-        delete o;
+        delete curlParser;
+        delete finalPageParser;
     }
 
 // begin page parse - функция для получения ссылок с начальной страницы
     void bPageParse(string &href){
 
-        o->setUrl(href);
+        curlParser->setUrl(href);
         string *page;
-        page = o ->getStringFromDoc();
+        page = curlParser ->getStringFromDoc();
 
 
 
@@ -76,9 +78,9 @@ public:
 
 // second page parse - функция для получения количества моделей
     void sPageParse(string &href){
-        o->setUrl(href);
+        curlParser->setUrl(href);
         string *page;
-        page =  o ->getStringFromDoc();
+        page =  curlParser ->getStringFromDoc();
 
 
         if(page -> length()) cout<<"Products page load success "<<href<<"\n";
@@ -136,9 +138,8 @@ public:
     void objPageParse(string &href, long long int &cnt)
     {
         long long int startTime = time(nullptr);
-        o->setUrl(href);
-        string *page;
-        page =  o ->getStringFromDoc();
+        curlParser->setUrl(href);
+        string *page = curlParser->getStringFromDoc();
 
         if(page -> length()) cout << "Object page load success "<< href<<"\n";
 
@@ -148,8 +149,6 @@ public:
                 t = k -> srhSpcTag("a","class=product-item__img",srtPos);
 
         for(int i=0; i<t.size(); i++){
-
-            //long long int startTime = time(nullptr);
 
             long long int begPos = t[i].first, endPos = t[i].second;
 
@@ -189,10 +188,9 @@ public:
 
     void fPageParse(string &href,vector <string> *ftr){
 // feature vector - содержит заголовок и особенности товара
-        cout << href << endl;
-        o->setUrl(href);
+        finalPageParser->setUrl(href);
         string *page;
-        page = o ->getStringFromDoc();
+        page = finalPageParser ->getStringFromDoc();
 
         vector <string> prs;
 

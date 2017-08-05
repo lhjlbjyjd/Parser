@@ -324,6 +324,10 @@ public:
         getSpcBody(tag,attr,ftr,0);
     }
 
+    unsigned long getPageLength(){
+        return html->length();
+    }
+
 
 
 
