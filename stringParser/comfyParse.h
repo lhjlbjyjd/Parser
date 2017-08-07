@@ -36,7 +36,7 @@ public:
         delete finalPageParser;
     }
 
-// begin page parse - функция для получения ссылок с начальной страницы
+    // begin page parse - функция для получения ссылок с начальной страницы
     void bPageParse(string &href){
 
         curlParser->setUrl(href);
@@ -76,16 +76,15 @@ public:
 
     }
 
-// second page parse - функция для получения количества моделей
+    // second page parse - функция для получения количества моделей
     void sPageParse(string &href){
         curlParser->setUrl(href);
         string *page;
         page =  curlParser ->getStringFromDoc();
 
-
         if(page -> length()) cout<<"Products page load success "<<href<<"\n";
-// получаем строчку, в которой содержится количество моделей
-// и обрабатываем число
+    // получаем строчку, в которой содержится количество моделей
+    // и обрабатываем число
         vector <string> mdl;
 
         stringParse *strPrs = new stringParse(page);
@@ -94,7 +93,7 @@ public:
 
         tidyUp(&mdl);
 
-// возможная ошибка
+        // возможная ошибка
         if(!mdl.size()) return;
 
         string s = mdl[0];
@@ -105,12 +104,10 @@ public:
         {
             if(s[i]==' ') break;
             mdlNum *=10;
-
             mdlNum += (long long int) (s[i]-'0');
-
         }
 
-// теперь будем скакать по страницам
+        // теперь будем скакать по страницам
         long long int cnt = 0;
 
         string hrefObj = href + "?p=";
@@ -128,15 +125,11 @@ public:
             for(int j = k.length()-1; j>-1; j--) kRev += k[j];
 
             objPageParse(kRev, cnt);
-
         }
-
     }
 
-// object page parse - функция для получения данных со страницы товара
-
-    void objPageParse(string &href, long long int &cnt)
-    {
+    // object page parse - функция для получения данных со страницы товара
+    void objPageParse(string &href, long long int &cnt) {
         long long int startTime = time(nullptr);
         curlParser->setUrl(href);
         string *page = curlParser->getStringFromDoc();
@@ -161,7 +154,6 @@ public:
             vector <string> ftr;
             fPageParse(hrefFinal, &ftr);
 
-
             ofstream out;
 
             string path ="./results/" + title +".txt";
@@ -169,16 +161,13 @@ public:
             out.open(c);
 
             for(int i=0; i<ftr.size(); i++)
-                out<<ftr[i]<<"\n";
+                out << ftr[i] << endl;
 
             out.close();
-
         }
-
         cout << "Time elapsed for object: " << time(nullptr)-startTime << " sec." << endl;
 
         delete k;
-
     }
 
 
@@ -195,7 +184,6 @@ public:
         vector <string> prs;
 
         stringParse *k = new stringParse(page);
-
 
         if(page -> length()){
             cout<<"Final page load success: ";
@@ -220,7 +208,7 @@ public:
         tidyUp(ftr);
 
         //ДОБАВЛЕНО КРИВОРУКИМ ДОЛБОЁБОМ
-        //serialiseContent(ftr);
+        serialiseContent(ftr);
     }
 
     void serialiseContent(vector <string> *ftr){
@@ -261,11 +249,6 @@ public:
             (*ftr)[i] = s;
         }
 
-    }
-
-    void getBrands(string* page){
-        stringParse *k = new stringParse(page);
-        //k -> getSpcBody("dl","class=features-item__list", &prs, srtPos);
     }
 
 

@@ -58,7 +58,7 @@ public:
                 return it->second;
             }
         }
-        return "Undefined";
+        return "***Undefined key: " + s + ". Please, add manualy**";
     }
 
     string serializeValues(string key, string value){
